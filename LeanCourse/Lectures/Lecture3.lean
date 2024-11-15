@@ -357,9 +357,9 @@ example : s ∩ t = t ∩ s := by
 /- We can also use existing lemmas and `calc`. -/
 example : (s ∪ tᶜ) ∩ t = s ∩ t := by
   calc (s ∪ tᶜ) ∩ t
-      = (s ∩ t) ∪ (tᶜ ∩ t)  := by rw?
-    _ = s ∩ t ∪ ∅           := by rw?
-    _ = s ∩ t               := by rw?
+      = (s ∩ t) ∪ (tᶜ ∩ t)  := by rw [@union_inter_distrib_right]
+    _ = s ∩ t ∪ ∅           := by rw [@compl_inter_self]
+    _ = s ∩ t               := by rw [@union_empty]
 
 
 
@@ -397,7 +397,7 @@ example : (univ : Set α) = {x | True} := by rfl
 example (s : Set α) : powerset s = {t | t ⊆ s} := by rfl -- \powerset
 
 -- What is the type of `powerset s`?
--- #check powerset s
+#check powerset s
 
 
 /- We can take unions and intersections of families of sets in three different ways:

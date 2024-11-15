@@ -111,7 +111,8 @@ example (p q r s : Prop) (hq : p → s → q) (hr : q → r) : s → p → r := 
 
 /- We can also use `exact` or `refine` with more complicated proof terms. -/
 example (p q r : Prop) (hq : p → p → q) (hr : q → r) : p → r := by {
-  sorry
+  intro hp
+  exact hr (hq hp hp)
   }
 
 

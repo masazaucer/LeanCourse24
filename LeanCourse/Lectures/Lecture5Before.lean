@@ -135,7 +135,9 @@ example : fac 4 = 24 := rfl
 #eval fac 100
 
 theorem fac_pos (n : ℕ) : 0 < fac n := by {
-  sorry
+  induction n with
+  | zero ⇒ sorry
+  | succ n ih ⇒ sorry
   }
 
 open BigOperators Finset
@@ -160,7 +162,12 @@ This makes it harder to prove things about it, so we generally avoid using it
 
 
 example (n : ℕ) : ∑ i in range (n + 1), (i : ℚ) = n * (n + 1) / 2 := by {
-  sorry
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ih]
+    field_simp
+    ring
   }
 
 /- Some other useful induction principles -/
@@ -171,7 +178,11 @@ example (n : ℕ) : ∑ i in range (n + 1), (i : ℚ) = n * (n + 1) / 2 := by {
 /- We can use other induction principles with `induction ... using ... with` -/
 
 theorem fac_dvd_fac (n m : ℕ) (h : n ≤ m) : fac n ∣ fac m := by {
-  sorry
+  induction m, h using Nat.le_induction with
+  | base ⇒ rfl
+  | succ k hk ih ⇒
+    rw [fac]
+    exact?
   }
 
 
@@ -317,9 +328,11 @@ instance : Add Point := ⟨add⟩
 @[simp] lemma add_x (a b : Point) : (a + b).x = a.x + b.x := by rfl
 @[simp] lemma add_y (a b : Point) : (a + b).y = a.y + b.y := by rfl
 @[simp] lemma add_z (a b : Point) : (a + b).z = a.z + b.z := by rfl
+--use this lemma automatically when calling simp
 
 example (a b : Point) : a + b = b + a := by {
-  sorry
+  ext
+  all_goals simp[add_comm]
   }
 
 end Point

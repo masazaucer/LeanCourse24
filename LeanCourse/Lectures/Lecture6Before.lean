@@ -166,7 +166,13 @@ example (f : ℝ → PosReal) (hf : Monotone f) :
 
 /- Specify that the range is a subset of a given set (recommended). -/
 example (f : ℝ → ℝ) (hf : range f ⊆ {x | x > 0}) (h2f : Monotone f) :
-  Monotone (log ∘ f) := sorry
+  Monotone (log ∘ f) := by {
+    unfold Monotone
+    unfold Monotone at h2f
+    intro a b a_leq_b
+    specialize h2f
+    sorry
+  }
 
 /- Domain is a subtype (not recommended). -/
 example (f : PosReal → ℝ) (hf : Monotone f) :
@@ -175,7 +181,9 @@ example (f : PosReal → ℝ) (hf : Monotone f) :
 /- Only specify that a function is well-behaved
 on a subset of its domain (recommended). -/
 example (f : ℝ → ℝ) (hf : MonotoneOn f {x | x > 0}) :
-    Monotone (fun x ↦ f (exp x)) := sorry
+    Monotone (fun x ↦ f (exp x)) := by {
+      sorry
+    }
 
 
 

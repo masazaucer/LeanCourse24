@@ -32,18 +32,39 @@ abbrev PosReal : Type := {x : ℝ // x > 0}
 /- Codomain is a subtype (usually not recommended). -/
 example (f : ℝ → PosReal) (hf : Monotone f) :
     Monotone (fun x ↦ log (f x)) := by {
-  sorry
+  unfold Monotone
+  intro a b a_leq_b
+  unfold Monotone at hf
+  simp
+  have fa_leq_fb : (f a : ℝ) ≤ f b := by exact hf a_leq_b
+  have hfa : (f a : ℝ) > 0 := by apply (f a).2
+  have hfb : (f b : ℝ) > 0 := by apply (f b).2
+  exact (log_le_log_iff hfa hfb).mpr (hf a_leq_b)
   }
 
 /- Specify that the range is a subset of a given set (recommended). -/
 example (f : ℝ → ℝ) (hf : range f ⊆ {x | x > 0}) (h2f : Monotone f) :
   Monotone (log ∘ f) := by {
-  sorry
+  intro a b a_leq_b
+  have fa_leq_fb : f a ≤ f b := by apply h2f a_leq_b
+  have hfa : f a > 0 := by
+    apply hf
+    use a
+  have hfb : (f b : ℝ) > 0 := by
+    apply hf
+    use b
+  exact (log_le_log_iff hfa hfb).mpr fa_leq_fb
   }
 
 /- Domain is a subtype (not recommended). -/
 example (f : PosReal → ℝ) (hf : Monotone f) :
     Monotone (fun x ↦ f ⟨exp x, exp_pos x⟩) := by {
+  intro a b a_leq_b
+  simp
+  unfold Monotone at hf
+  have ea : PosReal := ⟨rexp a, exp_pos a⟩
+  have eb : PosReal := ⟨rexp b, exp_pos b⟩
+  have eq_leq_eb : (ea : ℝ) ≤ eb := by sorry
   sorry
   }
 
@@ -105,7 +126,11 @@ instance : MulAction G (Subgroup G) := sorry
 Let's define the smallest equivalence relation on a type `X`. -/
 def myEquivalenceRelation (X : Type*) : Setoid X where
   r x y := x = y
-  iseqv := sorry -- Here you have to show that this is an equivalence.
+  iseqv := {
+    refl := sorry
+    symm := sorry
+    trans := sorry
+  } -- Here you have to show that this is an equivalence.
                  -- If you click on the `sorry`, a lightbulb will appear to give the fields
 
 /- This simp-lemma will simplify `x ≈ y` to `x = y` in the lemma below. -/
