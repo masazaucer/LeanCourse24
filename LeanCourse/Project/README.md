@@ -3,9 +3,10 @@
 Please fill out the following. Fill in the project topic once you have decided.
 ```
 First & last name: Maša Žaucer
-Project topic:
+Project topic: Artin Wedderburn's theorem
 Partner (optional):
 ```
+Github repository : https://github.com/JobPetrovcic/ArtinWedderburn
 
 ## Your own project
 
